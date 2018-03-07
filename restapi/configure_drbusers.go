@@ -11,10 +11,13 @@ import (
 	middleware "github.com/go-openapi/runtime/middleware"
 	graceful "github.com/tylerb/graceful"
 
+	"github.com/thisisdavidbell/drbusers/models"
 	"github.com/thisisdavidbell/drbusers/restapi/operations"
 )
 
 // This file is safe to edit. Once it exists it will not be overwritten
+
+var exampleUsers = models.Usersarray{"David", "Patrick", "Chrissie", "Chris"}
 
 //go:generate swagger generate server --target .. --name drbusers --spec ../simpleWithDef.yaml
 
@@ -37,7 +40,8 @@ func configureAPI(api *operations.DrbusersAPI) http.Handler {
 	api.JSONProducer = runtime.JSONProducer()
 
 	api.GetUsersHandler = operations.GetUsersHandlerFunc(func(params operations.GetUsersParams) middleware.Responder {
-		return middleware.NotImplemented("operation .GetUsers has not yet been implemented")
+		return operations.NewGetUsersOK().WithPayload(exampleUsers)
+		//return middleware.NotImplemented("operation .GetUsers has not yet been implemented")
 	})
 
 	api.ServerShutdown = func() {}
